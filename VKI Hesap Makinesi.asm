@@ -6,11 +6,11 @@ include "emu8086.inc"
 .data     
 .code
 main proc
-MOV AH, 06h    ; Kayma fonksiyonu
-XOR AL, AL     ; Butun ekrani temizle
-XOR CX, CX     ; Sol ust kose CH=satir, CL=sutun
-MOV DX, 184FH  ; Sag alt kose DH=satir, DL=sutun 
-MOV BH, 1Eh    ; Arka plan ve yazi rengi
+MOV AH, 06h    ; Scroll up function
+XOR AL, AL     ; Clear entire screen
+XOR CX, CX     ; Upper left corner CH=row, CL=column
+MOV DX, 184FH  ; lower right corner DH=row, DL=column 
+MOV BH, 1Eh    ; YellowOnBlue
 INT 10H
           
           
@@ -18,7 +18,7 @@ INT 10H
     mov ds, ax
     define_scan_num 
     define_clear_screen
-;================== Giris Ekrani ====================== 
+;================== Welcome Page ====================== 
     
     GOTOXY 20, 5  
     printn "||======================================||"
@@ -43,13 +43,13 @@ INT 10H
     call clear_screen
     mov cx, 0
     
-MOV AH, 06h    ; Kayma fonksiyonu
-XOR AL, AL     ; Butun ekrani temizle
-XOR CX, CX     ; Sol ust kose CH=satir, CL=sutun
-MOV DX, 184FH  ; Sag alt kose DH=satir, DL=sutun 
-MOV BH, 1Eh    ; Arka plan ve yazi rengi
+MOV AH, 06h    ; Scroll up function
+XOR AL, AL     ; Clear entire screen
+XOR CX, CX     ; Upper left corner CH=row, CL=column
+MOV DX, 184FH  ; lower right corner DH=row, DL=column 
+MOV BH, 1Eh    ; YellowOnBlue
 INT 10H
-    GOTOXY 0, 1     ;Giris ekrani tamamlandi.
+    GOTOXY 0, 1     ;welcome complt
       
 MOV AX,0h   
 MOV BX,0h
@@ -58,7 +58,7 @@ MOV DX,0h
        
     GOTOXY 15, 5
     PRINT 'CM cinsinden boyunuz:  '         
-        CALL SCAN_NUM                ;Kullanicidan boy girisi aliniyor.         
+        CALL SCAN_NUM                ;Height input         
         MOV [0200h],CX                       
         MOV AX,CX                             
                              
@@ -66,7 +66,7 @@ MOV DX,0h
   
     GOTOXY 15, 7
     PRINT 'KG cinsinden kilonuz:  ' 
-    CALL SCAN_NUM                ;Kullanicidan kilo girisi aliniyor.       
+    CALL SCAN_NUM                ;Weight input     
     MOV [0202h],CX                       
     MOV CX,0h 
     
@@ -75,58 +75,58 @@ MOV DX,0h
 
                       mov dx,ax
                                     
-                      cmp dx, 1     ;dx 1 ise
-                      JE Kilolu     ;Kilolu fonksiyonuna atla
+                      cmp dx, 1     ;if dx 1
+                      JE Kilolu     ;Overweight
                       
-                      cmp dx, 2     ;dx 2 ise
-                      JE Kilolu     ;Kilolu fonksiyonuna atla
+                      cmp dx, 2     ;if dx 2
+                      JE Kilolu     ;Overweight
                       
-                      cmp dx, 3     ;dx 3 ise
-                      JE Normal     ;Normal fonksionuna atla
+                      cmp dx, 3     ;if dx 3
+                      JE Normal     ;Normal
     
-                      cmp dx, 4     ;dx 4 ise
-                      JE Zayif      ;Zayif fonksiyonuna atla
+                      cmp dx, 4     ;if dx 4
+                      JE Zayif      ;Slim
                       
-                      cmp dx, 5     ;dx 5 ise
-                      JE Zayif      ;Zayif fonksiyonuna atla
+                      cmp dx, 5     ;if dx 5
+                      JE Zayif      ;Slim
                       
      
-    Zayif:
+    Zayif:          ;Slim
     GOTOXY 35, 11
-        print "VKI: Zayif "
+        print "BMI: Slim "
         jmp press
-    Normal:
+    Normal:         ;Normal
     GOTOXY 35, 11
-       print "VKI: Normal Kiloda "
+       print "BMI: Normal "
        jmp press 
-    Kilolu:
+    Kilolu:         ;Overweight
     GOTOXY 35, 11
-       print "VKI: Kilolu "
+       print "BMI: Overweight "
        jmp press 
        
        
        press:
        
        GOTOXY 2,14
-       print "1. VKI ZAYIF ise onerileri almak icin basin."
+       print "1. VKI ZAYIF ise onerileri almak icin basin." ;Press 1 to see suggestions if BMI found as Slim
        
        
        GOTOXY 2,16 
-       print "2. VKI KILOLU ise onerileri almak icin basin."
+       print "2. VKI KILOLU ise onerileri almak icin basin."    ;Press 2 to see suggestions if BMI found as Overweight
       GOTOXY 27, 23
       
-    print "Devam etmek icin giris yapin..."
+    print "Devam etmek icin giris yapin..."     ;Press any button to continue....
     mov ah, 0
     int 16h
     
     call clear_screen
 
 
-MOV AH, 06h    ; Kayma fonksiyonu
-XOR AL, AL     ; Butun ekrani temizle
-XOR CX, CX     ; Sol ust kose CH=satir, CL=sutun
-MOV DX, 184FH  ; Sag alt kose DH=satir, DL=sutun 
-MOV BH, 1Eh    ; Arka plan ve yazi rengi 
+MOV AH, 06h    ; Scroll up function
+XOR AL, AL     ; Clear entire screen
+XOR CX, CX     ; Upper left corner CH=row, CL=column
+MOV DX, 184FH  ; lower right corner DH=row, DL=column  
+MOV BH, 1Eh    ; YellowOnBlue 
 INT 10H                                  
 
 MOV AX,0h   
@@ -135,7 +135,7 @@ MOV CX,0h
 MOV DX,0h 
  
     GOTOXY 27, 2
-    print "1 veya 2'ye basin..."
+    print "1 veya 2'ye basin..."        ;Press 1 or 2
     mov ah, 01h
     int 21h
     
@@ -148,7 +148,7 @@ MOV DX,0h
     P1:
     
         GOTOXY 2, 4
-        print "1.Daha fazla yemek tuketin ve gunde 8 saat uykunuzu alin"
+        print "1.Daha fazla yemek tuketin ve gunde 8 saat uykunuzu alin"                ;Suggestions for Slim
         GOTOXY 2, 6
         print "2.Yuksek kalorili besinler tuketin.(Patates, Tavuk gogsu, Pilav, Badem, vs.)" 
         GOTOXY 2, 9
@@ -163,8 +163,8 @@ MOV DX,0h
     
     P2:
      
-        GOTOXY 2, 4
-        print "1.Dusuk kalorili Saglikli diet uygulayin."
+        GOTOXY 2, 4     
+        print "1.Dusuk kalorili Saglikli diet uygulayin."                               ;Suggestions for Overweight
         GOTOXY 2, 6
         print "2.Yuksek proteine sahip yiyecekler tuketin ve Fast Food'dan kacinin."
         GOTOXY 2, 8
