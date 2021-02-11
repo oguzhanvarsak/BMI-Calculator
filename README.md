@@ -1,6 +1,6 @@
-# BMI-Calculator
+# BMI Calculator and COVID-19 Test
 -------------------
-BMI calculator written in Assembly for Microprocessors class.
+BMI calculator and COVID-19 Test written in Assembly for Microprocessors class.
 
 ![GitHub last commit](https://img.shields.io/github/last-commit/oguzhanvarsak/BMI-Calculator) [![Build Status](https://www.travis-ci.com/oguzhanvarsak/BMI-Calculator.svg?branch=main)](https://www.travis-ci.com/oguzhanvarsak/BMI-Calculator) ![GitHub top language](https://img.shields.io/github/languages/top/oguzhanvarsak/BMI-Calculator)
 
